@@ -1,24 +1,61 @@
-# README
+# Resto API
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+Resto API is a Ruby on Rails 5 application intended to work with PostgreSQL 9 and above.
 
-Things you may want to cover:
+## Installation
 
-* Ruby version
+Clone the Git repo
 
-* System dependencies
+```
+git clone git@github.com:zeulb/resto.git
+cd resto
+```
 
-* Configuration
+Install the gem dependencies
 
-* Database creation
+```
+bundle install
+```
 
-* Database initialization
+## Sandbox
 
-* How to run the test suite
+### Setting Up
 
-* Services (job queues, cache servers, search engines, etc.)
+Resto is intended to be used with PostgreSQL.
+Configure your database connection in `config/database.yml`
 
-* Deployment instructions
+```
+[...]
+default: &default
+[...]
+  host: localhost
+  username: resto-api
+  password: ...
+[...]
+```
 
-* ...
+### Seeding
+
+Run
+
+```
+rails db:seed
+```
+
+To seed database with some data.
+
+### Running Server
+Start the server
+
+```
+rails server
+```
+
+A server will be run in port 3000 by default.
+
+## Running Tests
+To run all tests
+
+```
+bundle exec rspec
+```
