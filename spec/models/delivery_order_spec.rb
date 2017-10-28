@@ -1,5 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe DeliveryOrder, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+  it { should have_many(:order_items) }
+
+  it { should validate_presence_of(:order_id) }
+  it { should validate_presence_of(:serving_datetime) }
 end
