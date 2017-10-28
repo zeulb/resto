@@ -24,7 +24,7 @@ ActiveRecord::Schema.define(version: 20171028141214) do
   end
 
   create_table "meals", force: :cascade do |t|
-    t.string "name"
+    t.string "name", null: false
     t.string "byline"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -33,8 +33,8 @@ ActiveRecord::Schema.define(version: 20171028141214) do
   create_table "order_items", force: :cascade do |t|
     t.bigint "delivery_order_id"
     t.bigint "meal_id"
-    t.integer "quantity"
-    t.integer "unit_price"
+    t.integer "quantity", null: false
+    t.integer "unit_price", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["delivery_order_id"], name: "index_order_items_on_delivery_order_id"
