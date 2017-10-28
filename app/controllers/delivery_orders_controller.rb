@@ -13,7 +13,7 @@ class DeliveryOrdersController < ApplicationController
   def show
     @order = DeliveryOrder.where(order_id: params[:id]).first!
     json_response({
-      order_id: @order.id,
+      order_id: @order.order_id,
       delivery_date: @order.serving_datetime.to_date,
       delivery_time: @order.serving_datetime.strftime("%H:%M"),
       order_items: @order.order_items.map { |order_item|
