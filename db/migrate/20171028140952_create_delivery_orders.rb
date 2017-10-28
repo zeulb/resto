@@ -6,7 +6,7 @@ class CreateDeliveryOrders < ActiveRecord::Migration[5.1]
 
       t.timestamps
     end
-  end
 
-  add_index :delivery_orders, :order_id, unique: true
+    add_index :delivery_orders, :order_id, unique: true
+  end
 end
