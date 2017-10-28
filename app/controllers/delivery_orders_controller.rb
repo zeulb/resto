@@ -1,11 +1,17 @@
 class DeliveryOrdersController < ApplicationController
   def index
     @orders = DeliveryOrder.all
-    json_response(@orders)
+    json_response(@orders.map { |order|
+      {
+        order_id: order.order_id,
+        delivery_date: order.serving_datetime.to_date,
+        delivery_time: order.serving_datetime.strftime("%H:%M")
+      }
+    })
   end
 
   def show
-    @order = DeliveryOrder.where(["order_id = ?", params[:id]]).first
+    @order = DeliveryOrder.where(order_id: params[:id]).first!
     json_response({
       order_id: @order.id,
       delivery_date: @order.serving_datetime.to_date,
