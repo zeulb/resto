@@ -1,5 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe Feedback, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+  it { should belong_to(:ratable) }
+
+  it { should validate_presence_of(:rating) }
+  it { should validate_inclusion_of(:rating).in_array([-1, 1]) }
 end
