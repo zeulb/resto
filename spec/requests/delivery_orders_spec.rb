@@ -2,17 +2,18 @@ require 'rails_helper'
 
 RSpec.describe 'DeliveryOrders API', type: :request do
   let!(:orders) { create_list(:delivery_order, 10) }
-  let!(:meals) { create_list(:meal, 5) }
   let(:order_id) {
     order = orders.first
-    meals.each { | meal |
+    order.update(feedback: create(:feedback))
+    5.times do
       OrderItem.create(
         delivery_order: order,
-        meal: meal,
+        meal: create(:meal),
+        feedback: create(:feedback),
         quantity: 7,
         unit_price: 1000
       )
-    }
+    end
     order.order_id
   }
 
@@ -66,6 +67,10 @@ RSpec.describe 'DeliveryOrders API', type: :request do
         }.not_to raise_error
       end
 
+      it 'returns feedback submitted' do
+        expect(json['feedback_submitted']).to be_truthy
+      end
+
       it 'returns the order items' do
         order_items = json['order_items']
         expect(order_items).not_to be_empty
@@ -75,6 +80,18 @@ RSpec.describe 'DeliveryOrders API', type: :request do
           expect(order_item['quantity']).to eq(7)
           expect(order_item['total_price']).to eq(7000)
         }
+      end
+
+      it 'returns status code 200' do
+        expect(response).to have_http_status(200)
+      end
+    end
+
+    context 'when the record has no feedbacks' do
+      let(:order_id) { orders.last.order_id }
+
+      it 'returns feedback not submitted' do
+        expect(json['feedback_submitted']).to be_falsey
       end
 
       it 'returns status code 200' do
