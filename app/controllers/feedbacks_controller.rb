@@ -31,6 +31,8 @@ class FeedbacksController < ApplicationController
       }
     end
     json_response({ status: "OK" }, :created)
+    rescue ArgumentError => exception
+      json_response({ status: "FAILED", message: exception.message }, :bad_request)
   end
 
   private
