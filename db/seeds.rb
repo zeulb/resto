@@ -50,62 +50,75 @@ orders = [
   {
     id: "GO123",
     serving_datetime: DateTime.now.advance(:hours => +4, :minutes => +20),
+    feedback: nil,
     items: [
-      { meal_index: 0, quantity: 1, unit_price: 930 },
-      { meal_index: 1, quantity: 2, unit_price: 870 }
+      { meal_index: 0, quantity: 1, unit_price: 930, feedback: nil },
+      { meal_index: 1, quantity: 2, unit_price: 870, feedback: nil }
     ]
   },
   {
     id: "GO124",
     serving_datetime: DateTime.now.advance(:hours => +2, :minutes => +10),
+    feedback: { rating: 1, comment: "pretty good" },
     items: [
-      { meal_index: 3, quantity: 1, unit_price: 680 },
-      { meal_index: 9, quantity: 3, unit_price: 795 },
-      { meal_index: 8, quantity: 1, unit_price: 860 }
+      { meal_index: 3, quantity: 1, unit_price: 680, feedback: { rating: 1, comment: "nice" } },
+      { meal_index: 9, quantity: 3, unit_price: 795, feedback: { rating: -1, comment: "nooo" } },
+      { meal_index: 8, quantity: 1, unit_price: 860, feedback: { rating: 1, comment: "ok!" } }
     ]
   },
   {
     id: "GO125",
     serving_datetime: DateTime.now.advance(:hours => +3, :minutes => +30),
+    feedback: { rating: -1, comment: "average" },
     items: [
-      { meal_index: 8, quantity: 7, unit_price: 795 }
+      { meal_index: 8, quantity: 7, unit_price: 795, feedback: { rating: -1, comment: "too oily" } }
     ]
   },
   {
     id: "GO126",
     serving_datetime: DateTime.now.advance(:hours => +5, :minutes => +24),
+    feedback: nil,
     items: [
-      { meal_index: 0, quantity: 1, unit_price: 920 },
-      { meal_index: 2, quantity: 1, unit_price: 870 },
-      { meal_index: 5, quantity: 1, unit_price: 770 },
-      { meal_index: 6, quantity: 3, unit_price: 720 },
-      { meal_index: 9, quantity: 1, unit_price: 1170 }
+      { meal_index: 0, quantity: 1, unit_price: 920, feedback: nil },
+      { meal_index: 2, quantity: 1, unit_price: 870, feedback: nil },
+      { meal_index: 5, quantity: 1, unit_price: 770, feedback: nil },
+      { meal_index: 6, quantity: 3, unit_price: 720, feedback: nil },
+      { meal_index: 9, quantity: 1, unit_price: 1170, feedback: nil }
     ]
   },
   {
     id: "GO173",
     serving_datetime: DateTime.now.advance(:hours => +4, :minutes => +25),
+    feedback: { rating: 1, comment: "superb" },
     items: [
-      { meal_index: 7, quantity: 1, unit_price: 570 },
-      { meal_index: 4, quantity: 1, unit_price: 970 },
-      { meal_index: 8, quantity: 3, unit_price: 835 },
-      { meal_index: 6, quantity: 1, unit_price: 580 }
+      { meal_index: 7, quantity: 1, unit_price: 570, feedback: { rating: 1, comment: "" } },
+      { meal_index: 4, quantity: 1, unit_price: 970, feedback: { rating: 1, comment: "" } },
+      { meal_index: 8, quantity: 3, unit_price: 835, feedback: { rating: 1, comment: "" } },
+      { meal_index: 6, quantity: 1, unit_price: 580, feedback: { rating: 1, comment: "+999" } }
     ]
   }
 ].map { | order |
+  delivery_feedback = order[:feedback].nil? \
+    ? nil \
+    : Feedback.create(order[:feedback]);
   delivery_order = DeliveryOrder.create(
     order_id: order[:id],
-    serving_datetime: order[:serving_datetime]
+    serving_datetime: order[:serving_datetime],
+    feedback: delivery_feedback
   )
 
   order[:items].map { |item|
     meal = meals[item[:meal_index]]
 
+    order_feedback = item[:feedback].nil? \
+      ? nil \
+      : Feedback.create(item[:feedback]);
     order_item = OrderItem.create(
       delivery_order: delivery_order,
       meal: meal,
       quantity: item[:quantity],
-      unit_price: item[:unit_price]
+      unit_price: item[:unit_price],
+      feedback: order_feedback
     )
   }
 }
