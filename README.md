@@ -85,11 +85,13 @@ Returns list of delivery orders.
 [
   {
     "order_id": "GO123",
+    "ratable_id": 1,
     "delivery_date": "2017-10-20",
     "delivery_time": "11:00-11:30",
     "feedback_submitted": true,
     "order_items": [
         {
+        "ratable_id": 2,
         "name": "Buffalo Chicken on Sweet Potato Mash and Celery Confit ",
         "quantity": 2,
         "total_price": 2390
@@ -109,11 +111,13 @@ Returns delivery order details.
 ```
 {
   "order_id": "GO123",
+  "ratable_id": 1,
   "delivery_date": "2017-10-20",
   "delivery_time": "11:00-11:30",
   "feedback_submitted": true,
   "order_items": [
     {
+      "ratable_id": 2,
       "name": "Buffalo Chicken on Sweet Potato Mash and Celery Confit ",
       "quantity": 2,
       "total_price": 2390
