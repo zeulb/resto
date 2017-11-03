@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171102122620) do
+ActiveRecord::Schema.define(version: 20171103105850) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -24,7 +24,7 @@ ActiveRecord::Schema.define(version: 20171102122620) do
   end
 
   create_table "feedbacks", force: :cascade do |t|
-    t.integer "rating", null: false
+    t.integer "rating"
     t.string "comment"
     t.integer "ratable_id"
     t.string "ratable_type"
@@ -48,6 +48,12 @@ ActiveRecord::Schema.define(version: 20171102122620) do
     t.datetime "updated_at", null: false
     t.index ["delivery_order_id"], name: "index_order_items_on_delivery_order_id"
     t.index ["meal_id"], name: "index_order_items_on_meal_id"
+  end
+
+  create_table "tokens", force: :cascade do |t|
+    t.string "token"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   add_foreign_key "order_items", "delivery_orders"
