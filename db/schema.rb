@@ -24,7 +24,7 @@ ActiveRecord::Schema.define(version: 20171103105850) do
   end
 
   create_table "feedbacks", force: :cascade do |t|
-    t.integer "rating"
+    t.integer "rating", null: false
     t.string "comment"
     t.integer "ratable_id"
     t.string "ratable_type"
