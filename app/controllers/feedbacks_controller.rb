@@ -56,9 +56,9 @@ class FeedbacksController < ApplicationController
       []
     else
       [
-        order.feedback, 
+        order.feedback,
         *order.order_items.map { |order_item| order_item.feedback }
-      ]
+      ].select { |feedback| feedback.present? }
     end
   end
 end
