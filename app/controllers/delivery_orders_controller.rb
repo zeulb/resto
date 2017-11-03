@@ -12,10 +12,15 @@ class DeliveryOrdersController < ApplicationController
   private
 
   def construct(order)
+    # Round down serving time to nearest 30 minutes
+    serving_start_datetime = \
+      Time.at((order.serving_datetime.to_f / 30.minutes).floor * 30.minutes).utc
+    serving_end_datetime = serving_start_datetime + 30.minutes
+    
     {
       order_id: order.order_id,
-      delivery_date: order.serving_datetime.to_date,
-      delivery_time: order.serving_datetime.strftime("%H:%M"),
+      delivery_date: serving_start_datetime.to_date,
+      delivery_time: serving_start_datetime.strftime("%H:%M") + "-" + serving_end_datetime.strftime("%H:%M"),
       feedback_submitted: !order.feedback.nil?,
       order_items: order.order_items.map { |order_item|
         {

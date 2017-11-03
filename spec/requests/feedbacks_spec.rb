@@ -2,6 +2,7 @@ require 'rails_helper'
 
 RSpec.describe 'Feedbacks API', type: :request do
   let(:order) { create(:delivery_order) }
+  let(:token) { Token.create(token: "token").token }
   let(:order_id) {
     order.update(feedback: create(:feedback))
     5.times do
@@ -17,7 +18,7 @@ RSpec.describe 'Feedbacks API', type: :request do
   }
 
   describe 'GET /orders/:id/feedbacks' do
-    before { get "/orders/#{order_id}/feedbacks" }
+    before { get "/orders/#{order_id}/feedbacks", :headers => { "Authorization" => "Bearer #{token}" } }
 
     context 'when the order exists' do
       it 'returns feedbacks' do
@@ -66,7 +67,8 @@ RSpec.describe 'Feedbacks API', type: :request do
           }
         ]
       }.to_json, :headers => {
-        "Content-Type" => "application/json"
+        "Content-Type" => "application/json",
+        "Authorization" => "Bearer #{token}"
       }
       order.reload
     }
