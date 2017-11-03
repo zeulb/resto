@@ -3,6 +3,8 @@ require 'database_cleaner'
 DatabaseCleaner.strategy = :truncation
 DatabaseCleaner.clean
 
+Token.create(token: '7c3959f341c12cc05499ede976fcb4ce')
+
 meals = [
   {
     name: "Dragon Well Basil Rice",
@@ -95,6 +97,14 @@ orders = [
       { meal_index: 4, quantity: 1, unit_price: 970, feedback: { rating: 1, comment: "" } },
       { meal_index: 8, quantity: 3, unit_price: 835, feedback: { rating: 1, comment: "" } },
       { meal_index: 6, quantity: 1, unit_price: 580, feedback: { rating: 1, comment: "+999" } }
+    ]
+  },
+  {
+    id: "GO175",
+    serving_datetime: DateTime.now.advance(:hours => +4, :minutes => +35),
+    feedback: nil,
+    items: [
+      { meal_index: 7, quantity: 1, unit_price: 570, feedback: nil }
     ]
   }
 ].map { | order |
