@@ -62,6 +62,18 @@ bundle exec rspec
 
 # API
 
+Resto API require authorization header when making a request
+
+```
+Authorization: Bearer <authorization_token>
+```
+
+To get an authorization token, run
+
+```
+rails generate_token
+```
+
 ## GET /orders
 
 Returns list of delivery orders.
@@ -74,12 +86,15 @@ Returns list of delivery orders.
   {
     "order_id": "GO123",
     "delivery_date": "2017-10-20",
-    "delivery_time": "11:00"
-  },
-  {
-    "order_id": "GO124",
-    "delivery_date": "2017-10-20",
-    "delivery_time": "13:00"
+    "delivery_time": "11:00-11:30",
+    "feedback_submitted": true,
+    "order_items": [
+        {
+        "name": "Buffalo Chicken on Sweet Potato Mash and Celery Confit ",
+        "quantity": 2,
+        "total_price": 2390
+    }
+  ]
   }
 ]
 ```
@@ -95,7 +110,8 @@ Returns delivery order details.
 {
   "order_id": "GO123",
   "delivery_date": "2017-10-20",
-  "delivery_time": "11:00"
+  "delivery_time": "11:00-11:30",
+  "feedback_submitted": true,
   "order_items": [
     {
       "name": "Buffalo Chicken on Sweet Potato Mash and Celery Confit ",
@@ -104,4 +120,63 @@ Returns delivery order details.
     }
   ]
 }
+```
+
+## GET /orders/:id/feedbacks
+`GET /orders/GO123/feedbacks`
+
+```
+[
+  {
+    "ratable_id": 123,
+    "ratable_type": "DeliveryOrder",
+    "rating": 1,
+    "comment": "Delivery was prompt and rider was kind, but he forgot cutleries"
+  },
+  {
+    "ratable_id": 1,
+    "ratable_type": "OrderItem",
+    "rating": -1,
+    "comment": "The food portion was too little, was alittle hungry after"
+  }
+  {
+    "ratable_id": 2,
+    "ratable_type": "OrderItem",
+    "rating": -1,
+    "comment": "It was super tasty and I loved it"
+  }
+]
+```
+
+## POST /orders/:id/feedbacks
+
+`POST /orders/GO123/feedbacks -H Content-Type: application/json`
+
+Payload
+
+```
+[
+  {
+    "ratable_id": 123,
+    "ratable_type": "DeliveryOrder",
+    "rating": 1,
+    "comment": "Delivery was prompt and rider was kind, but he forgot cutleries"
+  },
+  {
+    "ratable_id": 1,
+    "ratable_type": "OrderItem",
+    "rating": -1,
+    "comment": "The food portion was too little, was alittle hungry after"
+  }
+  {
+    "ratable_id": 2,
+    "ratable_type": "OrderItem",
+    "rating": -1,
+    "comment": "It was super tasty and I loved it"
+  }
+]
+```
+
+```
+{ status: "OK" }
 ```
